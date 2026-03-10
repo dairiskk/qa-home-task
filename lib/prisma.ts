@@ -34,18 +34,6 @@ function createPrismaClient() {
 
 	const normalizedConnectionString = withDefaultSslMode(connectionString);
 
-	try {
-		const parsed = new URL(normalizedConnectionString);
-		console.info("[prisma] init", {
-			nodeEnv: process.env.NODE_ENV,
-			host: parsed.host,
-			database: parsed.pathname.replace(/^\//, ""),
-			sslmode: parsed.searchParams.get("sslmode") ?? "(unset)",
-		});
-	} catch {
-		console.warn("[prisma] failed to parse DATABASE_URL for diagnostics");
-	}
-
 	const adapter = new PrismaPg({ connectionString: normalizedConnectionString });
 	return new PrismaClient({ adapter });
 }
