@@ -14,11 +14,15 @@ export default function QaTaskPage() {
                     <h2 className="text-xl font-semibold text-zinc-900">Application Requirements</h2>
                     <ul className="mt-2 list-disc pl-6 text-zinc-800">
                         <li>Users can register with a unique username and a password.</li>
+                        <li>Password must be at least 6 characters long.</li>
                         <li>Users can log in and log out.</li>
                         <li>Unauthenticated users cannot access the todos page.</li>
-                        <li>Authenticated users can create, list, complete, and delete their own todos.</li>
+                        <li>Authenticated users can create, list, complete, and delete only their own todos.</li>
+                        <li>After creating a todo, the input field is cleared.</li>
                         <li>Todo title is required and must not be longer than 200 characters.</li>
-                        <li>Users should only be able to see and manage their own data.</li>
+                        <li>Todo list is ordered from newest to oldest.</li>
+                        <li>A completed todo is visually different from an active todo.</li>
+                        <li>Deleted todos are removed from the list immediately.</li>
                     </ul>
                 </section>
 
