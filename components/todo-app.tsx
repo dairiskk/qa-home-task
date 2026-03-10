@@ -86,7 +86,6 @@ export function TodoApp({ username }: TodoAppProps) {
 
     if (data.todo) {
       setTodos((current) => [data.todo!, ...current]);
-      setTitle("");
     }
   }
 

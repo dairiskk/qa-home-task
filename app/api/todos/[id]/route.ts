@@ -71,7 +71,6 @@ export async function DELETE(_request: NextRequest, context: RouteContext) {
   const result = await prisma.todo.deleteMany({
     where: {
       id: todoId,
-      userId: user.id,
     },
   });
 
