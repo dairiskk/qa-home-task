@@ -126,6 +126,13 @@ export function AuthForm({ mode }: AuthFormProps) {
             {isRegister ? "Login" : "Register"}
           </Link>
         </p>
+
+        <p className="mt-2 text-sm text-zinc-600">
+          Want to review the assignment first? {" "}
+          <Link className="font-medium text-zinc-900 underline" href="/qa-task">
+            Open QA task
+          </Link>
+        </p>
       </div>
     </main>
   );
