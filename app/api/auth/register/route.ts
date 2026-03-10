@@ -12,6 +12,12 @@ export async function POST(request: NextRequest) {
   const username = body?.username?.trim();
   const password = body?.password;
 
+  console.info("[auth/register] request", {
+    hasBody: body !== null,
+    username,
+    hasPassword: typeof password === "string",
+  });
+
   if (typeof username !== "string" || typeof password !== "string") {
     return NextResponse.json({ error: "Invalid payload." }, { status: 400 });
   }
@@ -35,6 +41,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.info("[auth/register] user created", { userId: user.id, username: user.username });
+
     const { token, expiresAt } = await createSession(user.id);
     const response = NextResponse.json(
       { user: { id: user.id, username: user.username } },
@@ -48,7 +56,18 @@ export async function POST(request: NextRequest) {
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
     ) {
+      console.warn("[auth/register] username already taken", { username });
       return NextResponse.json({ error: "Username is already taken." }, { status: 409 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error("[auth/register] prisma known error", {
+        code: error.code,
+        message: error.message,
+        meta: error.meta,
+      });
+    } else {
+      console.error("[auth/register] unexpected error", error);
     }
 
     return NextResponse.json({ error: "Failed to register user." }, { status: 500 });
