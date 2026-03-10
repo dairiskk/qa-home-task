@@ -8,10 +8,15 @@ const globalForPrisma = globalThis as unknown as {
 function withDefaultSslMode(connectionString: string): string {
 	try {
 		const url = new URL(connectionString);
+		const useLibpqCompat = url.searchParams.get("uselibpqcompat") === "true";
+		const sslMode = url.searchParams.get("sslmode");
 
-		if (!url.searchParams.has("sslmode")) {
+		if (!sslMode) {
 			const sslMode = process.env.NODE_ENV === "production" ? "verify-full" : "disable";
 			url.searchParams.set("sslmode", sslMode);
+		} else if (!useLibpqCompat && ["prefer", "require", "verify-ca"].includes(sslMode)) {
+			// Keep current pg behavior explicit and silence deprecation warning.
+			url.searchParams.set("sslmode", "verify-full");
 		}
 
 		return url.toString();
